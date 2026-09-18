@@ -1,42 +1,44 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import tailwindcss from '@tailwindcss/vite'
-import path from "path"
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
+import path from "path";
 
 export default defineConfig(({ mode }) => {
   const isDocker = process.env.DOCKER === "true";
-  const isProduction = mode === 'production';
+  const isProduction = mode === "production";
 
   return {
     server: {
       open: !isDocker,
-      host: 'localhost',
-      base: isProduction ? '/' : '/Cinetrack',
+      host: "localhost",
+      base: isProduction ? "/" : "/Cinetrack",
       proxy: {
-        '/api': {
+        "/api": {
           target: isProduction
-            ? 'https://campusflow-85zn.onrender.com'
-            : 'http://localhost:8000',
+            ? "https://campusflow-85zn.onrender.com"
+            : "http://localhost:8000",
           changeOrigin: true,
         },
-        '/uploads': {
+        "/uploads": {
           target: isProduction
-            ? 'https://campusflow-85zn.onrender.com'
-            : 'http://localhost:8000',
+            ? "https://campusflow-85zn.onrender.com"
+            : "http://localhost:8000",
           changeOrigin: true,
         },
-        '/seed': {
+        "/seed": {
           target: isProduction
-            ? 'https://campusflow-85zn.onrender.com'
-            : 'http://localhost:8000',
+            ? "https://campusflow-85zn.onrender.com"
+            : "http://localhost:8000",
           changeOrigin: true,
         },
       },
     },
+
     plugins: [
       react(),
-      tailwindcss()
+      tailwindcss(),
     ],
+
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "./src"),
