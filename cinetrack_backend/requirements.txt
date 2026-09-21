@@ -1,4 +1,0 @@
-django
-rest_framework
-django_filters
-corsheaders
