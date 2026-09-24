@@ -18,6 +18,7 @@ interface MovieItem {
   director?: MovieOption | null;
   genres?: MovieOption[];
   actors?: MovieOption[];
+  watched?: boolean | null;
 }
 
 interface PaginatedResponse<T> {
@@ -80,9 +81,31 @@ async function fetchAllPages<T>(url: string): Promise<T[]> {
 
 export default function MovieListPage() {
   const [movies, setMovies] = useState<MovieItem[]>([]);
+  const [originalMovies, setOriginalMovies] = useState<MovieItem[]>([]);
   const [selectedMovie, setSelectedMovie] = useState<MovieItem | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [filters, setFilters] = useState({ title: "", watched: false });
+
+  const applyFilters = (moviesToFilter: MovieItem[], filterOptions: typeof filters) => {
+    return moviesToFilter
+      .filter((movie) => {
+        if (filterOptions.title && !movie.title.toLowerCase().includes(filterOptions.title.toLowerCase())) {
+          return false;
+        }
+        if (filterOptions.watched && !movie.watched) {
+          return false;
+        }
+        return true;
+      });
+  };
+
+  const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, type, value, checked } = event.target;
+    const newFilters = { ...filters, [name]: type === "checkbox" ? checked : value };
+    setFilters(newFilters);
+    setMovies(applyFilters(originalMovies, newFilters));
+  };
 
   useEffect(() => {
     const loadMovies = async () => {
@@ -108,6 +131,7 @@ export default function MovieListPage() {
           actors: normalizeEntityList(movie.actors as Array<MovieOption | number> | undefined, actorsMap),
         }));
 
+        setOriginalMovies(normalizedMovies);
         setMovies(normalizedMovies);
       } catch (loadError) {
         setError(
@@ -149,11 +173,31 @@ export default function MovieListPage() {
     <div className="min-h-screen bg-gray-950 px-4 py-10 text-white">
       <div className="mx-auto max-w-7xl">
         <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-          <div>
-            <p className="text-sm uppercase tracking-[0.2em] text-blue-400">
-              Cinetrack
-            </p>
-            <h1 className="mt-2 text-3xl font-bold md:text-4xl">Filmes</h1>
+          <div className="flex flex-row gap-4">
+            <div className="flex flex-col gap-2">
+              <p className="text-sm uppercase tracking-[0.2em] text-blue-400">
+                Cinetrack
+              </p>
+              <h1 className="mt-2 text-3xl font-bold md:text-4xl">Filmes</h1>
+            </div>
+
+            <input 
+              type="search" 
+              name="title"
+              placeholder="Buscar filmes..." 
+              value={filters.title}
+              onChange={handleFilterChange} 
+              className="bg-gray-800 text-gray-300 placeholder:text-gray-500 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 h-10 flex self-center justify-center align-center p-2 rounded-lg" 
+            />
+            <input 
+              type="checkbox" 
+              id="watched" 
+              name="watched" 
+              checked={filters.watched}
+              onChange={handleFilterChange} 
+              className="self-center" 
+            />
+            <label htmlFor="watched" className="self-center text-gray-300">Assistidos</label>
           </div>
 
           <div className="flex flex-wrap gap-3">

@@ -280,6 +280,45 @@ export default function MovieFormRegister({
             )}
           </section>
 
+          {/* Assistido */}
+          {/* <section>
+            <h2 className="mb-4 text-xl font-semibold">Assistido</h2>
+
+            <div className="grid max-h-64 gap-3 overflow-y-auto sm:grid-cols-2 md:grid-cols-3">
+                
+                <label
+                  htmlFor="watched"
+                  className="mb-2 block text-sm font-medium text-gray-300"
+                >
+                  Assistido
+                </label>
+
+                <input
+                  id="watched"
+                  name="watched"
+                  type="checkbox"
+                  className="h-4 w-4 rounded border-gray-600 bg-gray-700 text-blue-600 focus:ring-blue-500"
+                />
+            
+              </div>
+          </section> */}
+
+          <div className="md:col-span-2">
+                <label
+                  htmlFor="watched"
+                  className="mb-2 block text-sm font-medium text-gray-300"
+                >
+                  Assistido
+                </label>
+
+                <input
+                  id="watched"
+                  name="watched"
+                  type="checkbox"
+                  className="h-4 w-4 rounded border-gray-600 bg-gray-700 text-blue-600 focus:ring-blue-500"
+                />
+          </div>
+
           {/* Botões */}
           <div className="flex flex-col-reverse gap-3 border-t border-gray-800 pt-6 sm:flex-row sm:justify-end">
             <button
