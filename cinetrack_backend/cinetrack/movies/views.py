@@ -37,6 +37,7 @@ class MovieViewSet(viewsets.ModelViewSet):
         "director__name",
         "genres__name",
         "actors__name",
+        "watched",
     ]
     
     ordering_fields = [
@@ -44,6 +45,7 @@ class MovieViewSet(viewsets.ModelViewSet):
         "release_date",
         "rating",
         "duration",
+        "watched",
         "created_at",
     ]
     

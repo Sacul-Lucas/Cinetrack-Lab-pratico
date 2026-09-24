@@ -48,6 +48,10 @@ class MovieFilter(django_filters.FilterSet):
         lookup_expr="lte",
     )
 
+    watched = django_filters.BooleanFilter(
+        field_name="watched",
+    )
+
 class Meta:
     model = Movie
     fields = [
